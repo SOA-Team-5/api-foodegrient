@@ -6,17 +6,21 @@ ruby '3.1.2'
 
 # Configuration and Utilities
 gem 'figaro', '~> 1.2'
+gem 'rack-test'
 gem 'rake'
 
 group :production do
   gem 'pg'
 end
 
+# PRESENTATION LAYER
+gem 'multi_json', '~> 1.15'
+gem 'roar', '~> 1.1'
+
 # Web Application
 gem 'puma', '~> 6'
 gem 'rack-session', '~> 0.3'
 gem 'roda', '~> 3'
-gem 'slim', '~> 4'
 
 # Controllers and services
 gem 'dry-monads', '~> 1.4'
