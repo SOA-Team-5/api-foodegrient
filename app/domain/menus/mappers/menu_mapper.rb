@@ -34,12 +34,12 @@ module Foodegrient
           Foodegrient::Entity::Menu.new(
             id: 0,
             ingredients: @ingredients,
-            recipes:,
+            recipes: recipes # rubocop:disable Style/HashSyntax
           )
         end
 
         def recipes
-          @recipe_mapper.load_several()
+          @recipe_mapper.load_several
         end
       end
     end

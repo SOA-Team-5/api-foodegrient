@@ -59,7 +59,7 @@ module Foodegrient
 
             results_list = Views::ResultsList.new(keywords, result)
 
-            view('result', locals: { results_list: })
+            view('result', locals: { results_list: results_list }) # rubocop:disable Style/HashSyntax
           end
         end
       end

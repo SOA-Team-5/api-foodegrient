@@ -30,8 +30,8 @@ module Foodegrient
         def build_entity
           Entity::Recipe.new(
             id: nil,
-            image:,
-            title:
+            image: image, # rubocop:disable Style/HashSyntax
+            title: title # rubocop:disable Style/HashSyntax
             # ingredients:
           )
         end
