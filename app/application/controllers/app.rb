@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'roda'
-require 'slim'
-require 'slim/include'
 
 module Foodegrient
   # Web App
@@ -37,12 +35,11 @@ module Foodegrient
             if (ori_keywords.length == 0 || Forms::NewQuery.new.call(ingredients:ori_keywords.split(' ')).failure?)
               session[:watching].insert(0, false).uniq!
               response.status = 400
-              routing.redirect "../"
+              routing.redirect '../'
             else
               session[:watching].insert(0, true).uniq!
               routing.redirect "menu/#{ori_keywords}"
             end
-            
           end
         end
 
