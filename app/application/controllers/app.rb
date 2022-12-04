@@ -16,21 +16,17 @@ module Foodegrient
 
     route do |routing|
       routing.assets # load CSS
-      response['Content-Type'] = 'text/html; charset=utf-8'
+      response['Content-Type'] = 'application/json'
 
       # GET /
       routing.root do
-        session[:watching] ||= []
-        
-        empty_check = session[:watching]
-        
-        
-        if empty_check[0]==false
-          session[:watching].insert(0, true).uniq!
-          flash[:error] = 'Input Error: empty input or formatting error'
-          routing.redirect "/"
-        end
-        view 'home'
+        message = "Foodegrient API v1 at /api/v1/ in #{App.environment} mode"
+        result_response = Representer::HttpResponse.new(
+          Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
+        )
+
+        response.status = result_response.http_status_code
+        result_response.to_json
       end
 
       routing.on 'menu' do
