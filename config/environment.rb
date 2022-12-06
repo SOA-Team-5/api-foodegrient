@@ -13,16 +13,16 @@ module Foodegrient
 
     # CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
     # FOOD_API_TOKEN = CONFIG['FOOD_API_TOKEN']
-    
+
     # rubocop:disable Lint/ConstantDefinitionInBlock
     configure do
       # Environment variables setup
       Figaro.application = Figaro::Application.new(
-        environment:environment,
+        environment: environment, # rubocop:disable Style/HashSyntax
         path: File.expand_path('config/secrets.yml')
       )
-      Figaro.load;
-      def self.config 
+      Figaro.load
+      def self.config
         Figaro.env
       end
 
@@ -34,7 +34,7 @@ module Foodegrient
 
       # Database Setup
       DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
-      def self.DB 
+      def self.DB # rubocop:disable Naming/MethodName
         DB # rubocop:disable Naming/MethodName
       end
     end

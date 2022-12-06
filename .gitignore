@@ -60,3 +60,4 @@ build-iPhoneSimulator/
 coverage/*
 !coverage/.resultset.json
 *.db
+.DS_Store
