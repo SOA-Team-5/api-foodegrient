@@ -6,7 +6,7 @@
 # Usage:
 #  require_app
 #  require_app(%w[infrastructure models])
-def require_app(folders = %w[infrastructure domain presentation application applications])
+def require_app(folders = %w[infrastructure domain presentation application applications requests])
   app_list = Array(folders).map { |folder| "app/#{folder}" }
   full_list = ['config', app_list].flatten.join(',')
 
