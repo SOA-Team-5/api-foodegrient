@@ -10,12 +10,16 @@ module Foodegrient
       include Roar::JSON
     #   include Roar::Hypermedia
     #   include Roar::Decorator::HypermediaConsumer
-
+      property :id
       property :title
       property :image
-
+      property :likes
 
       private
+
+      def id
+        represented.id
+      end
 
       def title
         represented.title
@@ -23,6 +27,10 @@ module Foodegrient
 
       def image
         represented.image
+      end
+
+      def likes
+        represented.likes
       end
     end
   end

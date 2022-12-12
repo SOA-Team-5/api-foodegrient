@@ -1,5 +1,4 @@
 # frozen_string_literal: false
-
 require_relative '../entities/recipe'
 
 module Foodegrient
@@ -25,15 +24,20 @@ module Foodegrient
       class DataMapper
         def initialize(data)
           @data = data
+          @recipe_db_table = $DB[:recipe] # Create a dataset
+          @recipe_db_table.insert_ignore.multi_insert([{official_id: id, image: image, title: title, likes: likes}])
         end
 
         def build_entity
           Entity::Recipe.new(
-            id: nil,
+            id: id,
             image: image, # rubocop:disable Style/HashSyntax
-            title: title # rubocop:disable Style/HashSyntax
+            title: title, # rubocop:disable Style/HashSyntax
+            likes: likes
             # ingredients:
           )
+          # Populate the table
+          # @DB.run `INSERT INTO recipe(official_id, image, title, likes) VALUES(`+id+`, `+image+`, `+title+`, `+ likes+`)`
         end
 
         private
@@ -48,6 +52,10 @@ module Foodegrient
 
         def title
           @data['title']
+        end
+
+        def likes
+          @data['likes']
         end
       end
     end
