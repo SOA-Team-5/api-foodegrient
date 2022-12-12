@@ -5,27 +5,25 @@ module Foodegrient
   # Provides access to Food data
   module Spoonacular
     # Data Mapper: Spoonacular recipes -> Menu entity
-    class RecipeMapper
+    class DbRecipeMapper
       def initialize(data)
         @data = data
       end
 
       def load_several()
         @data.map do |item|
-          RecipeMapper.build_entity(item)
+          DbRecipeMapper.build_entity(item)
         end
       end
 
       def self.build_entity(data)
-        DataMapper.new(data).build_entity
+        DbDataMapper.new(data).build_entity
       end
 
       # Extracts entity specific elements from data structure
-      class DataMapper
+      class DbDataMapper
         def initialize(data)
           @data = data
-          @recipe_db_table = $DB[:recipe] # Create a dataset
-          @recipe_db_table.insert_conflict.multi_insert([{official_id: id, image: image, title: title, likes: likes}]) unless @recipe_db_table.where(official_id: id).count == 1
         end
 
         def build_entity
@@ -40,7 +38,7 @@ module Foodegrient
 
         private
         def id
-          @data['id']
+          @data['id'].to_i
         end
 
         def image
@@ -52,7 +50,7 @@ module Foodegrient
         end
 
         def likes
-          @data['likes']
+          @data['likes'].to_i
         end       
       end
     end
