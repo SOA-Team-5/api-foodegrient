@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'roda'
+require_relative '../../domain/top/mappers/top_mapper'
 
 module Foodegrient
   # Web App
@@ -45,9 +46,27 @@ module Foodegrient
               Representer::MenusRepresenter.new(
                 list
               ).to_json
-              end
             end
           end
+        end
+
+        routing.on 'top' do
+            # POST /project/
+            routing.get do
+              result = DBContent::TopMapper.new().search()
+             
+              Representer::TopRepresenter.new(
+                result
+              ).to_json
+              # message = "Foodegrient API v1 at /api/v1/ in #{App.environment} mode"
+              # result_response = Representer::HttpResponse.new(
+              #   Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
+              # )
+
+              # response.status = result_response.http_status_code
+              # result_response.to_json
+            end
+        end
       end
     end
   end
