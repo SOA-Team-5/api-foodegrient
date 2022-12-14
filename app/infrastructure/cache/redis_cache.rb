@@ -6,8 +6,10 @@ module Foodegrient
   module Cache
     # Redis client utility
     class Client
-      def initialize(config)
-        @redis = Redis.new(url: config.REDISCLOUD_URL)
+      require_relative '../../../config/environment' # load config info
+      def initialize()
+        @api = Foodegrient::App
+        @redis = Redis.new(url: @api.config.REDISCLOUD_URL)
       end
 
       def keys
@@ -16,6 +18,14 @@ module Foodegrient
 
       def wipe
         keys.each { |key| @redis.del(key) }
+      end
+
+      def set(key, value)
+        @redis.set(key, top_data)
+      end
+
+      def get(key)
+        @redis.get(key)
       end
     end
   end

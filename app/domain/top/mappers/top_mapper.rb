@@ -6,12 +6,19 @@ module Foodegrient
     # Data Mapper: Spoonacular recipes -> Menu entity
     class TopMapper
       def initialize()
+        @top_redis = Foodegrient::Cache::Client.new().get("top")
       end
 
       def search()
-        data = $DB[:recipe].order(:likes).offset(0).last
-        puts(data.to_hash)
-        build_entity(data)
+        if @top_redis != nil
+          puts(@top_redis.to_s)
+          redis_data = JSON.parse(@top_redis)
+          data = {:title => redis_data["title"], :image=>redis_data["image"], :likes=>redis_data["likes"]}
+        else
+          data = $DB[:recipe].order(:likes).offset(0).last
+        end
+        puts(data)
+        build_entity(data.to_hash)
       end
 
       def build_entity(data)
