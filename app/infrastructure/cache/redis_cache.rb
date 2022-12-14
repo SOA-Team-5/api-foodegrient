@@ -21,7 +21,7 @@ module Foodegrient
       end
 
       def set(key, value)
-        @redis.set(key, top_data)
+        @redis.set(key, value)
       end
 
       def get(key)
