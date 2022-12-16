@@ -9,10 +9,13 @@ require 'yaml'
 
 require 'minitest/autorun'
 require 'minitest/rg'
-# require 'vcr'
-# require 'webmock'
+require 'vcr'
+require 'webmock'
 
-CONFIG = YAML.safe_load(File.read(require_relative '../../config/secrets.yml'))
+require_relative '../../require_app'
+require_app
+
+CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
 API_TOKEN = CONFIG['FOOD_API_TOKEN']
 CORRECT = YAML.safe_load(File.read('spec/recipes_results.yml'))
 # CASSETTES_FOLDER = 'spec/cassettes'

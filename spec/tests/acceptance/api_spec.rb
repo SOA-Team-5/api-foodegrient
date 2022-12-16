@@ -30,30 +30,38 @@ describe 'Test API routes' do
 
       body = JSON.parse(last_response.body)
       _(body['status']).must_equal 'ok'
-      _(body['message']).must_include 'api/v1'
+      # _(body['message']).must_include 'api/v1'
     end
   end
 
-#   describe 'Get projects list' do
-#     it 'should successfully return project lists' do
-#       CodePraise::Service::AddProject.new.call(
-#         owner_name: USERNAME, project_name: PROJECT_NAME
-#       )
+  describe 'Top recipe' do
+    it 'should successfully return the top recipe' do
+      get '/api/v1/top'
+      _(last_response.status).must_equal 200
 
-#       list = ["#{USERNAME}/#{PROJECT_NAME}"]
-#       encoded_list = CodePraise::Request::EncodedProjectList.to_encoded(list)
+      body = JSON.parse(last_response.body)
+      _(body['title']) != nil
+      _(body['image']).must_include '.jpg'
+      _(body['likes']) != nil
+    end
+  end
 
-#       get "/api/v1/projects?list=#{encoded_list}"
-#       _(last_response.status).must_equal 200
+  describe 'Search menu' do
+    it 'should successfully return the top recipe' do
+      get '/api/v1/menu?keywords=apple'
+      _(last_response.status).must_equal 200
 
-#       response = JSON.parse(last_response.body)
-#       projects = response['projects']
-#       _(projects.count).must_equal 1
-#       project = projects.first
-#       _(project['name']).must_equal PROJECT_NAME
-#       _(project['owner']['username']).must_equal USERNAME
-#       _(project['contributors'].count).must_equal 3
-#     end
-
-#   end
+      body = JSON.parse(last_response.body)
+      body['recipe'] do |n|
+        if n.id == 673463
+          _(n.title).must_equal 'Slow Cooker Apple Pork Tenderloin'
+          _(n.image).must_equal 'https://spoonacular.com/recipeImages/673463-312x231.jpg'
+        end
+        if n.id == 660261
+          _(n.title).must_equal 'Slow Cooked Applesauce'
+          _(n.image).must_equal 'https://spoonacular.com/recipeImages/660261-312x231.jpg'
+        end
+      end
+    end
+  end
 end
