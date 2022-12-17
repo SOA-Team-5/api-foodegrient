@@ -37,13 +37,13 @@ jobs:
 
       - name: Setup test database
         env: # define secrets in Github project -> settings -> secrets
-            DB_FILENAME: ${{ secrets.DB_FILENAME }}
-        run: RACK_ENV=test bundle exec rake db:migrate
+            DB_URL: ${{ secrets.DB_URL }}
+        run: RACK_ENV=test bundle exec rake
 
       - name: Run all specs
         env: # define secrets in Github project -> settings -> secrets
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          DB_FILENAME: ${{ secrets.DB_FILENAME }}
-          REPOSTORE_PATH: ${{ secrets.REPOSTORE_PATH }}
-          API_HOST: ${{ secrets.API_HOST }}
+          FOOD_API_TOKEN: ${{ secrets.FOOD_API_TOKEN }}
+          REDISCLOUD_URL: ${{ secrets.REDISCLOUD_URL }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          DB_URL: ${{ secrets.DB_URL }}
         run: bundle exec rake spec
