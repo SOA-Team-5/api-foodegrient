@@ -3,6 +3,7 @@
 require_relative '../require_app'
 require_relative '../app/infrastructure/gateways/s3'
 require_relative '../app/domain/menus/mappers/db_recipe_mapper'
+require_relative 'job_reporter'
 require_app
 
 require 'figaro'
@@ -32,6 +33,9 @@ module ImageDownload
       shoryuken_options queue: config.HANDLE_IMG_QUEUE, auto_delete: true
 
       def perform(_sqs_msg, request)
+        job = JobReporter.new(request, Worker.config)
+
+        job.report(DownloadMonitor.starting_percent)
         puts(JSON.parse(request).to_s)
         @joined_table = $DB[:recipe].join_table(:inner, $DB[:match], detail_id: :recipe_id)
         check_result = @joined_table.where(menu_id: JSON.parse(request)['menu_id'])
@@ -50,6 +54,7 @@ module ImageDownload
           img_url = "img/" + time.year.to_s + "/" + time.month.to_s + "/" + uuid + ".jpg"
           wrapper = ObjectPutWrapper.new(Aws::S3::Object.new("foodegrient", img_url ,options={client: $CFR2}))
           success = wrapper.put_object(e.image)
+          job.report DownloadMonitor.progress(e)
 
           $DB[:recipe].where{{:image=>e.image}}.update(:image=>("https://pub-549992979d37433da73eb7c04f3d376b.r2.dev/" + img_url))
         end
