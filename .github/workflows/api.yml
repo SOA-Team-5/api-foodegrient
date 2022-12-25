@@ -21,6 +21,8 @@ jobs:
     strategy:
       # don't cancel other jobs if one fails
       fail-fast: false
+      # maximum number of jobs that can run simultaneously
+      max-parallel: 1
       matrix:
         os: [ubuntu]
     runs-on: ${{ matrix.os }}-latest  # Runs on latest builds of matrix OSes
@@ -46,4 +48,14 @@ jobs:
           REDISCLOUD_URL: ${{ secrets.REDISCLOUD_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           DB_URL: ${{ secrets.DB_URL }}
-        run: bundle exec rake spec
+          HANDLE_IMG_QUEUE: ${{ secrets.HANDLE_IMG_QUEUE }}
+          HANDLE_IMG_QUEUE_URL: ${{ secrets.HANDLE_IMG_QUEUE_URL }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_R2_ID: ${{ secrets.CLOUDFLARE_R2_ID }}
+        run: |
+          rake worker:run:test &
+          bundle exec rake spec
