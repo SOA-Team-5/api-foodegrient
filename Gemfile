@@ -80,3 +80,6 @@ gem 'aws-sdk-s3'
 gem 'httpclient'
 gem 'securerandom'
 gem 'nokogiri'
+
+# Workers
+gem 'faye', '~> 1.4'
