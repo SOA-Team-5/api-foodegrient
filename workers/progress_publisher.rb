@@ -2,7 +2,7 @@
 
 require 'http'
 
-module GitClone
+module ImageDownload
   # Publishes progress as percent to Faye endpoint
   class ProgressPublisher
     def initialize(config, channel_id)
