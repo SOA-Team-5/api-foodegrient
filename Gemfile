@@ -75,3 +75,7 @@ end
 gem 'rack-cache', '~> 1.13'
 gem 'redis', '~> 4.8'
 gem 'redis-rack-cache', '~> 2.2'
+
+gem 'aws-sdk-s3'
+gem 'httpclient'
+gem 'securerandom'

@@ -20,9 +20,11 @@ module Foodegrient
           $DB[:menu].insert_ignore.multi_insert([{ingredients: @keywords}])
 
           @recipes = @menus.recipes
+          @menu_id = $DB[:menu].where(ingredients: @keywords).get(:menu_id)
           for e in @recipes
-            $DB[:match].insert_ignore.multi_insert([{menu_id: $DB[:menu].where(ingredients: @keywords).get(:menu_id), detail_id: e.db_recipe_id, type: 0}])
+            $DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.db_recipe_id, type: 0}])
           end
+          self.request_handle_img_worker(@menu_id)
           @recipes
         else
           temp = []
@@ -33,6 +35,15 @@ module Foodegrient
           @db_recipe_mapper = Spoonacular::DbRecipeMapper.new(temp).load_several
           @recipes = @db_recipe_mapper
         end
+      end
+
+      def request_handle_img_worker(menu_id)
+        Messaging::Queue
+          .new(App.config.HANDLE_IMG_QUEUE_URL, App.config)
+          .send({:menu_id=>menu_id}.to_json)
+      rescue StandardError => e
+        print_error(e)
+        Failure(Response::ApiResult.new(status: :internal_error, message: CLONE_ERR))
       end
 
       attr_reader :keywords, :menus, :recipes

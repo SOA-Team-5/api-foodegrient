@@ -2,6 +2,8 @@
 
 require 'roda'
 require_relative '../../domain/top/mappers/top_mapper'
+require "aws-sdk-s3"
+require 'securerandom'
 
 module Foodegrient
   # Web App

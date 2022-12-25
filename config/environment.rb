@@ -7,6 +7,7 @@ require 'yaml'
 require 'rack/session'
 require 'rack/cache'
 require 'redis-rack-cache'
+require 'aws-sdk-s3'
 
 module Foodegrient
   # Configuration for the App
@@ -55,6 +56,15 @@ module Foodegrient
       def self.DB 
         DB # rubocop:disable Naming/MethodName
       end
+
+      
+      $CFR2 = Aws::S3::Client.new(
+        access_key_id: "#{config.R2_ACCESS_KEY_ID}",
+        secret_access_key: "#{config.R2_SECRET_ACCESS_KEY}",
+        endpoint: "https://#{config.CLOUDFLARE_R2_ID}.r2.cloudflarestorage.com",
+        region: "auto",
+        )
+
     end
     # rubocop:enable Lint/ConstantDefinitionInBlock
   end

@@ -149,7 +149,7 @@ namespace :cache do
         secret_access_key: @api.config.AWS_SECRET_ACCESS_KEY,
         region: @api.config.AWS_REGION
       )
-      @q_name = @api.config.CLONE_QUEUE
+      @q_name = @api.config.HANDLE_IMG_QUEUE
       @q_url = @sqs.get_queue_url(queue_name: @q_name).queue_url
   
       puts "Environment: #{@api.environment}"
