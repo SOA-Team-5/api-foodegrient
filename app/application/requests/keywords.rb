@@ -30,7 +30,7 @@ module Foodegrient
           temp = []
           check_result.each do |row|
             @hash_row = row
-            temp.push({"id"=> @hash_row[:official_id], "image"=> @hash_row[:image], "title"=> @hash_row[:title], "likes"=> @hash_row[:likes].to_i})
+            temp.push({"id"=> @hash_row[:official_id], "image"=> @hash_row[:image], "title"=> @hash_row[:title], "likes"=> @hash_row[:likes].to_i, "unlikes"=>  @hash_row[:unlikes].to_i})
           end
           @db_recipe_mapper = Spoonacular::DbRecipeMapper.new(temp).load_several
           @recipes = @db_recipe_mapper

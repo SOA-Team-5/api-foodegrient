@@ -14,6 +14,7 @@ module Foodegrient
       property :title
       property :image
       property :likes
+      property :unlikes
 
       private
 
@@ -31,6 +32,10 @@ module Foodegrient
 
       def likes
         represented.likes
+      end
+
+      def unlikes
+        represented.unlikes
       end
     end
   end

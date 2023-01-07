@@ -16,7 +16,6 @@ module Foodegrient
 
     # CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
     # FOOD_API_TOKEN = CONFIG['FOOD_API_TOKEN']
-    
     # rubocop:disable Lint/ConstantDefinitionInBlock
     configure do
       # Environment variables setup
@@ -25,7 +24,7 @@ module Foodegrient
         path: File.expand_path('config/secrets.yml')
       )
       Figaro.load;
-      def self.config 
+      def self.config
         Figaro.env
       end
 
@@ -53,11 +52,11 @@ module Foodegrient
       # Database Setup
       DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
       $DB = Sequel.connect((ENV.fetch'DATABASE_URL'))
-      def self.DB 
+      def self.DB
         DB # rubocop:disable Naming/MethodName
       end
 
-      
+
       $CFR2 = Aws::S3::Client.new(
         access_key_id: "#{config.R2_ACCESS_KEY_ID}",
         secret_access_key: "#{config.R2_SECRET_ACCESS_KEY}",
