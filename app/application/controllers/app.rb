@@ -86,7 +86,6 @@ module Foodegrient
             result_response.to_json
           end
         end
-
       end
     end
   end

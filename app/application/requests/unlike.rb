@@ -1,6 +1,5 @@
 require 'json'
 
-
 module Foodegrient
     module Request
         class UpdateUnlikes
