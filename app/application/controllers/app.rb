@@ -2,7 +2,7 @@
 
 require 'roda'
 require_relative '../../domain/top/mappers/top_mapper'
-require "aws-sdk-s3"
+require 'aws-sdk-s3'
 require 'securerandom'
 
 module Foodegrient
@@ -12,8 +12,10 @@ module Foodegrient
     plugin :flash
     plugin :common_logger, $stderr
     plugin :halt
+    plugin :default_headers,
+    'Access-Control-Allow-Origin'=>'*'
 
-    route do |routing|
+    route do |routing| # rubocop:disable Metrics/BlockLength
       response['Content-Type'] = 'application/json'
 
       # GET /
@@ -27,18 +29,17 @@ module Foodegrient
         result_response.to_json
       end
 
-      routing.on 'api/v1' do
+      routing.on 'api/v1' do # rubocop:disable Metrics/BlockLength
         routing.on 'menu' do
           routing.is do
             # POST /project/
             routing.get do
-              
               ori_keywords = routing.params['keywords']
               # api_result = Spoonacular::MenuMapper
               #        .new(App.config.FOOD_API_TOKEN)
               #        .search(ori_keywords.split('%20'))
               list = Foodegrient::Request::Keywords.new(ori_keywords)
-              message = ""
+              message = ''
               result_response = Representer::HttpResponse.new(
                 Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
               )
@@ -53,22 +54,23 @@ module Foodegrient
         end
 
         routing.on 'top' do
-            # POST /project/
-            routing.get do
-              result = DBContent::TopMapper.new().search()
-             
-              Representer::TopRepresenter.new(
-                result
-              ).to_json
-              # message = "Foodegrient API v1 at /api/v1/ in #{App.environment} mode"
-              # result_response = Representer::HttpResponse.new(
-              #   Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
-              # )
+          # POST /project/
+          routing.get do
+            result = DBContent::TopMapper.new.search
 
-              # response.status = result_response.http_status_code
-              # result_response.to_json
-            end
+            Representer::TopRepresenter.new(
+              result
+            ).to_json
+            # message = "Foodegrient API v1 at /api/v1/ in #{App.environment} mode"
+            # result_response = Representer::HttpResponse.new(
+            #   Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
+            # )
+
+            # response.status = result_response.http_status_code
+            # result_response.to_json
+          end
         end
+
       end
     end
   end
