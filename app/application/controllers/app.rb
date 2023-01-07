@@ -71,6 +71,21 @@ module Foodegrient
           end
         end
 
+        routing.on 'unlike' do
+          routing.get do
+            id = routing.params['id']
+            puts(id)
+
+            Foodegrient::Request::UpdateUnlikes.new(id).unlikeRecipe()
+
+            result_response = Representer::HttpResponse.new(
+              Response::ApiResult.new(status: :ok, message: id + ' unliked') # rubocop:disable Style/HashSyntax
+            )
+
+            response.status = result_response.http_status_code
+            result_response.to_json
+          end
+        end
       end
     end
   end
