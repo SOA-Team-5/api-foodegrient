@@ -15,6 +15,7 @@ module Foodegrient
       property :image
       property :likes
       property :unlikes
+      property :recipe_id
 
       private
 
@@ -36,6 +37,10 @@ module Foodegrient
 
       def unlikes
         represented.unlikes
+      end
+
+      def recipe_id
+        represented.recipe_id
       end
     end
   end
