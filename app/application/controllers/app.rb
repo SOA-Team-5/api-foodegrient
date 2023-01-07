@@ -61,13 +61,6 @@ module Foodegrient
             Representer::TopRepresenter.new(
               result
             ).to_json
-            # message = "Foodegrient API v1 at /api/v1/ in #{App.environment} mode"
-            # result_response = Representer::HttpResponse.new(
-            #   Response::ApiResult.new(status: :ok, message: message) # rubocop:disable Style/HashSyntax
-            # )
-
-            # response.status = result_response.http_status_code
-            # result_response.to_json
           end
         end
 
@@ -82,6 +75,21 @@ module Foodegrient
               Response::ApiResult.new(status: :ok, message: id + ' unliked') # rubocop:disable Style/HashSyntax
             )
 
+            response.status = result_response.http_status_code
+            result_response.to_json
+          end
+        end
+
+        routing.on 'like' do
+          routing.get do
+            id = routing.params['id']
+            puts(id)
+
+            Foodegrient::Request::UpdateLikes.new(id).likeRecipe()
+
+            result_response = Representer::HttpResponse.new(
+              Response::ApiResult.new(status: :ok, message: id + ' liked') # rubocop:disable Style/HashSyntax
+            )
             response.status = result_response.http_status_code
             result_response.to_json
           end
