@@ -143,8 +143,6 @@ GEM
     rack (3.0.1)
     rack-cache (1.13.0)
       rack (>= 0.4)
-    rack-cors (1.1.1)
-      rack (>= 2.0.0)
     rack-session (0.3.0)
       rack (>= 3.0.0.beta1)
     rack-test (2.0.2)
@@ -238,7 +236,6 @@ DEPENDENCIES
   pry
   puma (~> 6)
   rack-cache (~> 1.13)
-  rack-cors
   rack-session (~> 0.3)
   rack-test
   rake
