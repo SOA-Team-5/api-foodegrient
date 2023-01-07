@@ -122,6 +122,8 @@ GEM
       minitest (~> 5.0)
     multi_json (1.15.0)
     nio4r (2.5.8)
+    nokogiri (1.13.10-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.10-x64-mingw-ucrt)
       racc (~> 1.4)
     nokogiri (1.13.10-x86_64-linux)
@@ -141,6 +143,8 @@ GEM
     rack (3.0.1)
     rack-cache (1.13.0)
       rack (>= 0.4)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-session (0.3.0)
       rack (>= 3.0.0.beta1)
     rack-test (2.0.2)
@@ -188,6 +192,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    sqlite3 (1.5.4-arm64-darwin)
     sqlite3 (1.5.4-x64-mingw-ucrt)
     sqlite3 (1.5.4-x86_64-linux)
     thor (1.2.1)
@@ -206,6 +211,7 @@ GEM
     zeitwerk (2.6.6)
 
 PLATFORMS
+  arm64-darwin-21
   x64-mingw-ucrt
   x86_64-linux
 
@@ -232,6 +238,7 @@ DEPENDENCIES
   pry
   puma (~> 6)
   rack-cache (~> 1.13)
+  rack-cors
   rack-session (~> 0.3)
   rack-test
   rake

@@ -12,6 +12,8 @@ module Foodegrient
     plugin :flash
     plugin :common_logger, $stderr
     plugin :halt
+    plugin :default_headers,
+    'Access-Control-Allow-Origin'=>'*'
 
     route do |routing| # rubocop:disable Metrics/BlockLength
       response['Content-Type'] = 'application/json'
