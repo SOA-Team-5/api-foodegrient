@@ -33,7 +33,7 @@ module Foodegrient
             title: title, # rubocop:disable Style/HashSyntax
             likes: likes,
             unlikes: unlikes,
-            db_recipe_id: $DB[:recipe].where(official_id: id).get(:recipe_id),
+            recipe_id: $DB[:recipe].where(official_id: id).get(:recipe_id),
           )
         end
 
