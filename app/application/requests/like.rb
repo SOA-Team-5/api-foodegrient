@@ -8,7 +8,7 @@ module Foodegrient
           end
 
           def likeRecipe()
-            res = $DB[:recipe].select(:recipe_id, :official_id, :likes).where(official_id: @id)
+            res = $DB[:recipe].select(:recipe_id, :official_id, :likes).where(recipe_id: @id)
             likes_num = res.get(:likes).to_i
             res.update(likes:(likes_num +1))
           end
