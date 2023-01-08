@@ -36,8 +36,8 @@ class ImageWorker
     @drink_joined_table = $DB[:drink].join_table(:inner, ($DB[:match].join_table(:inner, $DB[:menu], menu_id: :menu_id)), detail_id: :id)
     
     check_result = @joined_table.where(menu_id: JSON.parse(request)['menu_id'])
-    drink_check_result = @drink_joined_table.where(ingredients: ori_keywords)
-    
+    drink_check_result = @drink_joined_table.where(menu_id: JSON.parse(request)['menu_id'])
+
     time = Time.new
     temp = []
     check_result.each do |row|
