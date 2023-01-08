@@ -53,6 +53,72 @@ module Foodegrient
           end
         end
 
+        routing.on 'recipes' do
+          routing.on 'unlike' do
+            routing.get do
+              id = routing.params['id']
+              puts(id)
+  
+              Foodegrient::Request::UpdateUnlikes.new(id).unlikeRecipe()
+  
+              result_response = Representer::HttpResponse.new(
+                Response::ApiResult.new(status: :ok, message: id + ' unliked') # rubocop:disable Style/HashSyntax
+              )
+  
+              response.status = result_response.http_status_code
+              result_response.to_json
+            end
+          end
+  
+          routing.on 'like' do
+            routing.get do
+              id = routing.params['id']
+              puts(id)
+  
+              Foodegrient::Request::UpdateLikes.new(id).likeRecipe()
+  
+              result_response = Representer::HttpResponse.new(
+                Response::ApiResult.new(status: :ok, message: id + ' liked') # rubocop:disable Style/HashSyntax
+              )
+              response.status = result_response.http_status_code
+              result_response.to_json
+            end
+          end
+        end
+
+        routing.on 'drinks' do
+          routing.on 'unlike' do
+            routing.get do
+              id = routing.params['id']
+              puts(id)
+  
+              Foodegrient::Request::UpdateUnlikes.new(id).unlikeDrink()
+  
+              result_response = Representer::HttpResponse.new(
+                Response::ApiResult.new(status: :ok, message: id + ' unliked') # rubocop:disable Style/HashSyntax
+              )
+  
+              response.status = result_response.http_status_code
+              result_response.to_json
+            end
+          end
+  
+          routing.on 'like' do
+            routing.get do
+              id = routing.params['id']
+              puts(id)
+  
+              Foodegrient::Request::UpdateLikes.new(id).likeDrink()
+  
+              result_response = Representer::HttpResponse.new(
+                Response::ApiResult.new(status: :ok, message: id + ' liked') # rubocop:disable Style/HashSyntax
+              )
+              response.status = result_response.http_status_code
+              result_response.to_json
+            end
+          end
+        end
+
         routing.on 'top' do
           # POST /project/
           routing.get do
@@ -64,36 +130,7 @@ module Foodegrient
           end
         end
 
-        routing.on 'unlike' do
-          routing.get do
-            id = routing.params['id']
-            puts(id)
-
-            Foodegrient::Request::UpdateUnlikes.new(id).unlikeRecipe()
-
-            result_response = Representer::HttpResponse.new(
-              Response::ApiResult.new(status: :ok, message: id + ' unliked') # rubocop:disable Style/HashSyntax
-            )
-
-            response.status = result_response.http_status_code
-            result_response.to_json
-          end
-        end
-
-        routing.on 'like' do
-          routing.get do
-            id = routing.params['id']
-            puts(id)
-
-            Foodegrient::Request::UpdateLikes.new(id).likeRecipe()
-
-            result_response = Representer::HttpResponse.new(
-              Response::ApiResult.new(status: :ok, message: id + ' liked') # rubocop:disable Style/HashSyntax
-            )
-            response.status = result_response.http_status_code
-            result_response.to_json
-          end
-        end
+        
       end
     end
   end
