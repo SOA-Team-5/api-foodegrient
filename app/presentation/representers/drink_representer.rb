@@ -20,14 +20,13 @@ module Foodegrient
         represented.id
       end
 
-      def title
-        represented.title
+      def name
+        represented.name
       end
 
       def image
         represented.image
       end
-
     end
   end
 end
