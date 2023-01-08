@@ -8,23 +8,21 @@ module Foodegrient
   module Spoonacular
     # Data Mapper: Spoonacular recipes -> Menu entity
     class MenuMapper
-      def initialize(food_token, drink_token)
+      def initialize(food_token)
         @food_token = food_token
-        @drink_token = drink_token
       end
 
       def build_entity(ingredients)
-        DataMapper.new(ingredients, @food_token, @drink_token).build_entity
+        DataMapper.new(ingredients, @food_token).build_entity
       end
 
       # Extracts entity specific elements from data structure
       class DataMapper
-        def initialize(ingredients, food_token, drink_token)
+        def initialize(ingredients, food_token)
           @ingredients = ingredients
           @food_token = food_token
-          @drink_token = drink_token
-          @drink_mapper = DrinkMapper.new(@drink_token)
-          @recipe_mapper = RecipeMapper.new(@data)
+          @recipe_mapper = RecipeMapper.new(@food_token)
+          @drink_mapper = CocktailDb::DrinkMapper.new
         end
 
         def build_entity

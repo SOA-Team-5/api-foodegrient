@@ -3,13 +3,12 @@ require_relative '../entities/drink'
 
 module Foodegrient
   # Provides access to Food data
-  module Spoonacular
+  module CocktailDb
     # Data Mapper: CocktailDb  -> Drink entity
     class DrinkMapper
-      def initialize(drink_token, gateway_class = CocktailDb::Api)
-        @token = drink_token
+      def initialize(gateway_class = CocktailDb::Api)
         @gateway_class = gateway_class
-        @gateway = @gateway_class.new(@token)
+        @gateway = @gateway_class.new
       end
       
       def load_several(ingredient)
