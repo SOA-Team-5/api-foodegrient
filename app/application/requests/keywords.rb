@@ -15,8 +15,8 @@ module Foodegrient
         check_result = @joined_table.where(ingredients: ori_keywords)
         if check_result.count<1
           @menus = Spoonacular::MenuMapper
-          .new(App.config.FOOD_API_TOKEN)
-          .search(@keywords)
+            .new(App.config.FOOD_API_TOKEN)
+            .build_entity(@keywords)
           $DB[:menu].insert_ignore.multi_insert([{ingredients: @keywords}])
 
           @recipes = @menus.recipes
@@ -26,6 +26,7 @@ module Foodegrient
           end
           self.request_handle_img_worker(@menu_id)
           @recipes
+          @menus
         else
           temp = []
           check_result.each do |row|
