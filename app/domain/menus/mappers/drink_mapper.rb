@@ -26,7 +26,7 @@ module Foodegrient
         def initialize(data)
           @data = data
           @recipe_db_table = $DB[:drink] # Create a dataset
-          @recipe_db_table.insert_conflict.multi_insert([{origin_id: id, image: image, name: title}]) unless @recipe_db_table.where(origin_id: id).count == 1
+          @recipe_db_table.insert_conflict.multi_insert([{origin_id: id, image: image, name: name}]) unless @recipe_db_table.where(origin_id: id).count == 1
         end
 
         def build_entity
@@ -46,7 +46,7 @@ module Foodegrient
           @data['strDrinkThumb']
         end
 
-        def title
+        def name
           @data['strDrink']
         end
 
