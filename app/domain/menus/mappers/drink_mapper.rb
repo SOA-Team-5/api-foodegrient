@@ -34,6 +34,7 @@ module Foodegrient
             id: id,
             name: name, # rubocop:disable Style/HashSyntax
             image: image, # rubocop:disable Style/HashSyntax
+            drink_id: $DB[:drink].where(origin_id: id).get(:id),
           )
         end
 

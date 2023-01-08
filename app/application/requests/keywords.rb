@@ -10,40 +10,45 @@ module Foodegrient
     class Keywords
       def initialize(ori_keywords)
         @keywords = ori_keywords.split('%20')
-        @menus = Spoonacular::MenuMapper
-          .new(App.config.FOOD_API_TOKEN)
-          .build_entity(@keywords)
+        # @menus = Spoonacular::MenuMapper
+        #   .new(App.config.FOOD_API_TOKEN)
+        #   .build_entity(@keywords)
 
-        @recipes = @menus.recipes
-        @drinks = @menus.drinks
-        @menus
+        # @recipes = @menus.recipes
+        # @drinks = @menus.drinks
+        # @menus
 
 
-        #@joined_table = $DB[:recipe].join_table(:inner, ($DB[:match].join_table(:inner, $DB[:menu], menu_id: :menu_id)), detail_id: :recipe_id)
-        #check_result = @joined_table.where(ingredients: ori_keywords)
-        #if check_result.count<1
-          #@menus = Spoonacular::MenuMapper
-            #.new(App.config.FOOD_API_TOKEN)
-            #.build_entity(@keywords)
-          #$DB[:menu].insert_ignore.multi_insert([{ingredients: @keywords}])
+        @joined_table = $DB[:recipe].join_table(:inner, ($DB[:match].join_table(:inner, $DB[:menu], menu_id: :menu_id)), detail_id: :recipe_id)
+        check_result = @joined_table.where(ingredients: ori_keywords)
+        if check_result.count<1
+          @menus = Spoonacular::MenuMapper
+            .new(App.config.FOOD_API_TOKEN)
+            .build_entity(@keywords)
+          $DB[:menu].insert_ignore.multi_insert([{ingredients: @keywords}])
 
-          #@recipes = @menus.recipes
-          #@menu_id = $DB[:menu].where(ingredients: @keywords).get(:menu_id)
-          #for e in @recipes
-            #$DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.db_recipe_id, type: 0}])
-          #end
-          #self.request_handle_img_worker(@menu_id)
-          #@recipes
-          #@menus
-        #else
-          #temp = []
-          #check_result.each do |row|
-            #@hash_row = row
-            #temp.push({"id"=> @hash_row[:official_id], "image"=> @hash_row[:image], "title"=> @hash_row[:title], "likes"=> @hash_row[:likes].to_i})
-          #end
-          #@db_recipe_mapper = Spoonacular::DbRecipeMapper.new(temp).load_several
-          #@recipes = @db_recipe_mapper
-        #end
+          @recipes = @menus.recipes
+          @drinks = @menus.drinks
+          @menu_id = $DB[:menu].where(ingredients: @keywords).get(:menu_id)
+          for e in @recipes
+            $DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.db_recipe_id, type: 0}])
+          end
+
+          for e in @drinks
+            $DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.drink_id, type: 1}])
+          end
+          self.request_handle_img_worker(@menu_id)
+          
+          @menus
+        else
+          temp = []
+          check_result.each do |row|
+            @hash_row = row
+            temp.push({"id"=> @hash_row[:official_id], "image"=> @hash_row[:image], "title"=> @hash_row[:title], "likes"=> @hash_row[:likes].to_i})
+          end
+          @db_recipe_mapper = Spoonacular::DbRecipeMapper.new(temp).load_several
+          @recipes = @db_recipe_mapper
+        end
       end
 
       def request_handle_img_worker(menu_id)
