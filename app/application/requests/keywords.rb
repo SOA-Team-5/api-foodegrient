@@ -34,7 +34,7 @@ module Foodegrient
           @drinks = @menus.drinks
           @menu_id = $DB[:menu].where(ingredients: @keywords).get(:menu_id)
           for e in @recipes
-            $DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.db_recipe_id, type: 0}])
+            $DB[:match].insert_ignore.multi_insert([{menu_id: @menu_id, detail_id: e.recipe_id, type: 0}])
           end
 
           for e in @drinks
