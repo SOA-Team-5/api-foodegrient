@@ -6,12 +6,14 @@ module Foodegrient
   module Spoonacular
     # Data Mapper: CocktailDb  -> Drink entity
     class DrinkMapper
-      def initialize(data)
-        @data = data
+      def initialize(drink_token, gateway_class = CocktailDb::Api)
+        @token = drink_token
+        @gateway_class = gateway_class
+        @gateway = @gateway_class.new(@token)
       end
-
-      def load_several()
-        @data.map do |item|
+      
+      def load_several(ingredient)
+        @gateway.cocktail_data(ingredient).map do |item|
           DrinkMapper.build_entity(item)
         end
       end

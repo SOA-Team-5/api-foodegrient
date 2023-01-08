@@ -1,32 +1,29 @@
 # frozen_string_literal: false
 
 require_relative 'recipe_mapper'
+require_relative 'drink_mapper'
 
 module Foodegrient
   # Provides access to Food data
   module Spoonacular
     # Data Mapper: Spoonacular recipes -> Menu entity
     class MenuMapper
-      def initialize(food_token, gateway_class = Spoonacular::Api)
-        @token = food_token
-        @gateway_class = gateway_class
-        @gateway = @gateway_class.new(@token)
+      def initialize(food_token, drink_token)
+        @food_token = food_token
+        @drink_token = drink_token
       end
 
-      def search(ingredients)
-        data = @gateway.menu_data(ingredients)
-        build_entity(ingredients, data)
-      end
-
-      def build_entity(ingredients, data)
-        DataMapper.new(ingredients, data).build_entity
+      def build_entity(ingredients)
+        DataMapper.new(ingredients, @food_token, @drink_token).build_entity
       end
 
       # Extracts entity specific elements from data structure
       class DataMapper
-        def initialize(ingredients, data)
+        def initialize(ingredients, food_token, drink_token)
           @ingredients = ingredients
-          @data = data
+          @food_token = food_token
+          @drink_token = drink_token
+          @drink_mapper = DrinkMapper.new(@drink_token)
           @recipe_mapper = RecipeMapper.new(@data)
         end
 
@@ -34,12 +31,21 @@ module Foodegrient
           Foodegrient::Entity::Menu.new(
             id: 0,
             ingredients: @ingredients,
-            recipes: recipes # rubocop:disable Style/HashSyntax
+            recipes: recipes, # rubocop:disable Style/HashSyntax
+            drinks: drinks # rubocop:disable Style/HashSyntax
           )
         end
 
         def recipes
-          @recipe_mapper.load_several
+          @recipe_mapper.load_several(@ingredients)
+        end
+
+        def drinks
+          drinks_list = Array.new
+          @ingredients.map do |ingredient|
+            drinks_list.push(@drink_mapper.load_several(ingredient))
+          end
+          drink_list.reduce([], :concat)
         end
       end
     end
