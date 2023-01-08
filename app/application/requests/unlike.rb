@@ -12,6 +12,12 @@ module Foodegrient
             unlikes_num = res.get(:unlikes).to_i
             res.update(unlikes:(unlikes_num +1))
           end
+
+          def unlikeDrink()
+            res = $DB[:drink].select(:id, :origin_id, :unlikes).where(id: @id)
+            unlikes_num = res.get(:unlikes).to_i
+            res.update(unlikes:(unlikes_num +1))
+          end
         end
     end
 end
