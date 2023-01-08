@@ -86,7 +86,7 @@ module Foodegrient
           end
         end
 
-        routing.on 'drink' do
+        routing.on 'drinks' do
           routing.on 'unlike' do
             routing.get do
               id = routing.params['id']
