@@ -33,8 +33,11 @@ class ImageWorker
   def perform(_sqs_msg, request)
     puts(JSON.parse(request).to_s)
     @joined_table = $DB[:recipe].join_table(:inner, $DB[:match], detail_id: :recipe_id)
+    @drink_joined_table = $DB[:drink].join_table(:inner, ($DB[:match].join_table(:inner, $DB[:menu], menu_id: :menu_id)), detail_id: :id)
+    
     check_result = @joined_table.where(menu_id: JSON.parse(request)['menu_id'])
-
+    drink_check_result = @drink_joined_table.where(ingredients: ori_keywords)
+    
     time = Time.new
     temp = []
     check_result.each do |row|
