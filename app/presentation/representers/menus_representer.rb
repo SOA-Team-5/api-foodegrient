@@ -13,6 +13,8 @@ module Foodegrient
 
       collection :recipes, extend: Representer::Menu,
                             class: Representer::Menu
+      collection :drinks, extend: Representer::Drink,
+                            class: Representer::Drink
     end
   end
 end

@@ -15,7 +15,7 @@ module Foodegrient
       attribute :id,          Integer.optional
       attribute :ingredients, Strict::Array.of(String)
       attribute :recipes,     Strict::Array.of(Recipe)
-      attribute :drinks, Strict::Array.of(Drink).optional
+      attribute :drinks,      Strict::Array.of(Drink)
 
       def to_attr_hash
         to_hash.except(:id, :ingredients, :recipes, :drinks)

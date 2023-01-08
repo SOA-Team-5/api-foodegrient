@@ -39,7 +39,7 @@ module Foodegrient
 
         private
         def id
-          @data['idDrink']
+          @data['idDrink'].to_i
         end
 
         def image

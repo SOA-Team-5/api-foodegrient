@@ -43,7 +43,7 @@ module Foodegrient
           @ingredients.map do |ingredient|
             drinks_list.push(@drink_mapper.load_several(ingredient))
           end
-          drink_list.reduce([], :concat)
+          drinks_list.reduce([], :concat)
         end
       end
     end
