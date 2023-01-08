@@ -13,6 +13,9 @@ module Foodegrient
       property :id
       property :name
       property :image
+      property :likes
+      property :unlikes
+      property :drink_id
 
       private
 
@@ -26,6 +29,18 @@ module Foodegrient
 
       def image
         represented.image
+      end
+
+      def likes
+        represented.likes
+      end
+
+      def unlikes
+        represented.unlikes
+      end
+
+      def drink_id
+        represented.drink_id
       end
     end
   end
