@@ -6,12 +6,14 @@ module Foodegrient
   module Spoonacular
     # Data Mapper: Spoonacular recipes -> Menu entity
     class RecipeMapper
-      def initialize(data)
-        @data = data
+      def initialize(food_token, gateway_class = Spoonacular::Api)
+        @token = food_token
+        @gateway_class = gateway_class
+        @gateway = @gateway_class.new(@token)
       end
 
-      def load_several()
-        @data.map do |item|
+      def load_several(ingredients)
+        @gateway.menu_data(ingredients).map do |item|
           RecipeMapper.build_entity(item)
         end
       end
