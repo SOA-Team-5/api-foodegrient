@@ -21,7 +21,3 @@ module Foodegrient
     end
   end
 end
-
-contract = Foodegrient::Forms::NewQuery.new
-
-puts contract.call(ingredients:['123', '123', 'abc']).errors.to_h

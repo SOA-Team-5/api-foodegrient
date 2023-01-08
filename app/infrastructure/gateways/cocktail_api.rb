@@ -11,7 +11,12 @@ module Foodegrient
       end
 
       def cocktail_data(ingredient)
-        Request.new.cocktail(ingredient).parse
+        begin
+          Request.new.cocktail(ingredient).parse["drinks"]
+        rescue
+          puts("rescue...")
+          {}
+        end
       end
 
       class Utils
@@ -29,7 +34,6 @@ module Foodegrient
 
         def call_cocktail_url(url)
           result = HTTP.get(url)
-          puts result
           Response.new(result).tap do |response|
             raise(response.error) unless response.successful?
           end
@@ -48,8 +52,8 @@ module Foodegrient
         NotFound = Class.new(StandardError)
 
         HTTP_ERROR = {
-          401 => Unauthorized,
-          404 => NotFound
+          #401 => Unauthorized,
+          #404 => NotFound
         }.freeze
 
         def successful?
