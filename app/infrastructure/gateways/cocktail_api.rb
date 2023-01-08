@@ -11,7 +11,12 @@ module Foodegrient
       end
 
       def cocktail_data(ingredient)
-        Request.new.cocktail(ingredient).parse["drinks"]
+        begin
+          Request.new.cocktail(ingredient).parse["drinks"]
+        rescue
+          puts("rescue...")
+          {}
+        end
       end
 
       class Utils
