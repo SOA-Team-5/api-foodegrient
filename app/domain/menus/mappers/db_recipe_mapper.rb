@@ -32,7 +32,8 @@ module Foodegrient
             image: image, # rubocop:disable Style/HashSyntax
             title: title, # rubocop:disable Style/HashSyntax
             likes: likes,
-            db_recipe_id: $DB[:recipe].where(official_id: id).get(:recipe_id),
+            unlikes: unlikes,
+            recipe_id: $DB[:recipe].where(official_id: id).get(:recipe_id),
           )
         end
 
@@ -51,7 +52,11 @@ module Foodegrient
 
         def likes
           @data['likes'].to_i
-        end       
+        end
+
+        def unlikes
+          @data['unlikes'].to_i
+        end
       end
     end
   end

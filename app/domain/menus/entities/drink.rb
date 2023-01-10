@@ -12,7 +12,7 @@ module Foodegrient
       attribute :id,        Integer.optional
       attribute :name,     Strict::String
       attribute :image,     Strict::String
-
+      attribute :drink_id,  Integer.optional
       def to_attr_hash
         to_hash.except(:id)
       end

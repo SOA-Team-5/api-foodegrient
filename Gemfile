@@ -78,5 +78,6 @@ gem 'redis-rack-cache', '~> 2.2'
 
 gem 'aws-sdk-s3'
 gem 'httpclient'
-gem 'nokogiri'gem 'securerandom'
 
+gem 'securerandom'
+gem 'nokogiri'

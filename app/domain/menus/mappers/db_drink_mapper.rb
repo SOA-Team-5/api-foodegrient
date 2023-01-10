@@ -5,14 +5,13 @@ module Foodegrient
   # Provides access to Food data
   module CocktailDb
     # Data Mapper: CocktailDb  -> Drink entity
-    class DrinkMapper
-      def initialize(gateway_class = CocktailDb::Api)
-        @gateway_class = gateway_class
-        @gateway = @gateway_class.new
+    class DbDrinkMapper
+      def initialize(data)
+        @data = data
       end
       
-      def load_several(ingredient)
-        @gateway.cocktail_data(ingredient).map do |item|
+      def load_several()
+        @data.map do |item|
           DrinkMapper.build_entity(item)
         end
       end
@@ -34,21 +33,21 @@ module Foodegrient
             id: id,
             name: name, # rubocop:disable Style/HashSyntax
             image: image, # rubocop:disable Style/HashSyntax
-            drink_id: $DB[:drink].where(origin_id: id).get(:id).to_i,
+            drink_id: $DB[:drink].where(origin_id: id).get(:id),
           )
         end
 
         private
         def id
-          @data['id'].to_i
+          @data['idDrink'].to_i
         end
 
         def image
-          @data['image']
+          @data['strDrinkThumb']
         end
 
         def name
-          @data['name'].to_s
+          @data['strDrink']
         end
 
       end
