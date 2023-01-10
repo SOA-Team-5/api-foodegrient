@@ -40,8 +40,8 @@ gem 'hirb-unicode', '~> 0'
 gem 'sequel', '~> 5.49'
 
 # Asynchronicity
-gem 'concurrent-ruby', '~> 1.1'
 gem 'aws-sdk-sqs', '~> 1.48'
+gem 'concurrent-ruby', '~> 1.1'
 gem 'shoryuken', '~> 5.3'
 
 group :development, :test do
@@ -78,5 +78,5 @@ gem 'redis-rack-cache', '~> 2.2'
 
 gem 'aws-sdk-s3'
 gem 'httpclient'
-gem 'securerandom'
-gem 'nokogiri'
+gem 'nokogiri'gem 'securerandom'
+
