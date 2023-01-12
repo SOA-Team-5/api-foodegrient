@@ -26,11 +26,20 @@ module Foodegrient
         end
 
         def build_entity
+          _recipes = nil
+          _drinks = nil
+
+          t1 = Thread.new{ _recipes = recipes }
+          t2 = Thread.new{ _drinks = drinks }
+
+          t1.join
+          t2.join
+
           Foodegrient::Entity::Menu.new(
             id: 0,
             ingredients: @ingredients,
-            recipes: recipes, # rubocop:disable Style/HashSyntax
-            drinks: drinks # rubocop:disable Style/HashSyntax
+            recipes: _recipes, # rubocop:disable Style/HashSyntax
+            drinks: _drinks # rubocop:disable Style/HashSyntax
           )
         end
 
