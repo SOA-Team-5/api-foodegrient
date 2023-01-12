@@ -1,6 +1,6 @@
 require "aws-sdk-s3"
 require 'httpclient'
-
+require 'net/http'
 
 # Wraps Amazon S3 object actions.
 class ObjectPutWrapper
@@ -12,8 +12,10 @@ class ObjectPutWrapper
   end
 
   def put_object(url)
-    client = HTTPClient.new
-    cont = client.get_content url
+    # client = HTTPClient.new
+    # cont = client.get_content url
+    uri = URI(url)
+    cont = Net::HTTP.get(uri)
     # File.open(source_file_path, "rb") do |file|
     #   @object.put(body: file)
     # end

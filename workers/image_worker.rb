@@ -33,7 +33,10 @@ class ImageWorker
   def perform(_sqs_msg, request)
     puts(JSON.parse(request).to_s)
     @joined_table = $DB[:recipe].join_table(:inner, $DB[:match], detail_id: :recipe_id)
+    @drink_joined_table = $DB[:drink].join_table(:inner, $DB[:match], detail_id: :id)
+    
     check_result = @joined_table.where(menu_id: JSON.parse(request)['menu_id'])
+    drink_check_result = @drink_joined_table.where(menu_id: JSON.parse(request)['menu_id'])
 
     time = Time.new
     temp = []
@@ -51,6 +54,23 @@ class ImageWorker
       success = wrapper.put_object(e.image)
 
       $DB[:recipe].where{{:image=>e.image}}.update(:image=>("https://pub-549992979d37433da73eb7c04f3d376b.r2.dev/" + img_url))
+    end
+
+    drink_temp = []
+    drink_check_result.each do |row|
+      @drink_hash_row = row
+      drink_temp.push({"id"=> @drink_hash_row[:origin_id], "image"=> @drink_hash_row[:image], "name"=> @drink_hash_row[:name], "likes"=> @drink_hash_row[:likes].to_i, "unlikes"=> @drink_hash_row[:unlikes].to_i})
+    end
+    @db_drink_mapper = Foodegrient::CocktailDb::DbDrinkMapper.new(drink_temp).load_several
+    @drinks = @db_drink_mapper
+
+    for e in @drinks
+      uuid = SecureRandom.uuid
+      img_url = "img/" + time.year.to_s + "/" + time.month.to_s + "/" + uuid + ".jpg"
+      wrapper = ObjectPutWrapper.new(Aws::S3::Object.new("foodegrient", img_url ,options={client: $CFR2}))
+      success = wrapper.put_object(e.image)
+  
+      $DB[:drink].where{{:image=>e.image}}.update(:image=>("https://pub-549992979d37433da73eb7c04f3d376b.r2.dev/" + img_url))
     end
   end
 end

@@ -12,6 +12,12 @@ module Foodegrient
             likes_num = res.get(:likes).to_i
             res.update(likes:(likes_num +1))
           end
+
+          def likeDrink()
+            res = $DB[:drink].select(:id, :origin_id, :likes).where(id: @id)
+            likes_num = res.get(:likes).to_i
+            res.update(likes:(likes_num +1))
+          end
         end
     end
 end

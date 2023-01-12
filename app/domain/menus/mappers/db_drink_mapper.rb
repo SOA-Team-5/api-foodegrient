@@ -12,7 +12,7 @@ module Foodegrient
       
       def load_several()
         @data.map do |item|
-          DrinkMapper.build_entity(item)
+          DbDrinkMapper.build_entity(item)
         end
       end
 
@@ -24,8 +24,8 @@ module Foodegrient
       class DataMapper
         def initialize(data)
           @data = data
-          @recipe_db_table = $DB[:drink] # Create a dataset
-          @recipe_db_table.insert_conflict.multi_insert([{origin_id: id, image: image, name: name}]) unless @recipe_db_table.where(origin_id: id).count == 1
+          # @recipe_db_table = $DB[:drink] # Create a dataset
+          # @recipe_db_table.insert_conflict.multi_insert([{origin_id: id, image: image, name: name}]) unless @recipe_db_table.where(origin_id: id).count == 1
         end
 
         def build_entity
@@ -34,22 +34,31 @@ module Foodegrient
             name: name, # rubocop:disable Style/HashSyntax
             image: image, # rubocop:disable Style/HashSyntax
             drink_id: $DB[:drink].where(origin_id: id).get(:id),
+            likes: likes,
+            unlikes: unlikes,
           )
         end
 
         private
         def id
-          @data['idDrink'].to_i
+          @data['id'].to_i
         end
 
         def image
-          @data['strDrinkThumb']
+          @data['image']
         end
 
         def name
-          @data['strDrink']
+          @data['name']
         end
-
+        
+        def likes
+            @data['likes'].to_i
+        end
+  
+        def unlikes
+          @data['unlikes'].to_i
+        end
       end
     end
   end

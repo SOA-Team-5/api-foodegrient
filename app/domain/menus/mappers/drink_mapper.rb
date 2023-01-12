@@ -35,20 +35,22 @@ module Foodegrient
             name: name, # rubocop:disable Style/HashSyntax
             image: image, # rubocop:disable Style/HashSyntax
             drink_id: $DB[:drink].where(origin_id: id).get(:id).to_i,
+            likes: 0,
+            unlikes: 0,
           )
         end
 
         private
         def id
-          @data['id'].to_i
+          @data['idDrink'].to_i
         end
 
         def image
-          @data['image']
+          @data['strDrinkThumb']
         end
 
         def name
-          @data['name'].to_s
+          @data['strDrink'].to_s
         end
 
       end

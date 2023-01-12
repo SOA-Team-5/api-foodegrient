@@ -13,6 +13,9 @@ module Foodegrient
       attribute :name,     Strict::String
       attribute :image,     Strict::String
       attribute :drink_id,  Integer.optional
+      attribute :likes,     Strict::Integer
+      attribute :unlikes,   Strict::Integer
+
       def to_attr_hash
         to_hash.except(:id)
       end
