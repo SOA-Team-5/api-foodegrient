@@ -81,3 +81,4 @@ gem 'httpclient'
 
 gem 'securerandom'
 gem 'nokogiri'
+gem 'net-http'

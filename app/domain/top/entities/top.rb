@@ -11,7 +11,7 @@ module Foodegrient
 
       attribute :title,          Strict::String
       attribute :image,          Strict::String
-      attribute :likes,          Strict::String
+      attribute :likes,          Strict::Integer
 
       def to_attr_hash
         to_hash.except(:title, :image, :likes)
